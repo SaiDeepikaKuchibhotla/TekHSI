@@ -1,18 +1,18 @@
-"""An example script for connecting to a scope, retrieving waveform data from multiple channels, and plotting it."""
+"""An example script for connecting to a scope, retrieving waveform data from multiple channels, and plotting it.
+Demonstrates use of AcqWaitOn options for data access control."""
 
 import matplotlib.pyplot as plt
 
 from tm_data_types import AnalogWaveform
 
-from tekhsi import TekHSIConnect
+from tekhsi import TekHSIConnect, AcqWaitOn
 
-address = "192.168.0.1"  # Replace with the IP address of your instrument
+address = "192.168.0.1"  # Updated IP address
 
-# Open connection to the instrument
+# Example 1: Wait for new data (default behavior)
 with TekHSIConnect(f"{address}:5000", ["ch1", "ch3"]) as connection:
-    # Request access to data
-    with connection.access_data():
-        # Access granted
+    # Request access to data, waiting for new data
+    with connection.access_data(AcqWaitOn.NewData):
         ch1: AnalogWaveform = connection.get_data("ch1")
         ch3: AnalogWaveform = connection.get_data("ch3")
 

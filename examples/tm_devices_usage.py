@@ -4,7 +4,7 @@ from tm_data_types import AnalogWaveform
 from tm_devices import DeviceManager
 from tm_devices.drivers import MSO6B
 
-from tekhsi import TekHSIConnect
+from tekhsi import TekHSIConnect, AcqWaitOn
 
 addr = "192.168.0.1"  # Replace with the IP address of your instrument
 
@@ -22,7 +22,6 @@ with DeviceManager(verbose=True) as device_manager:
     # time.sleep(2) # Optional delay
     # Connect to instrument via TekHSI, select channel 1
     with TekHSIConnect(f"{scope.ip_address}:5000", ["ch1"]) as connect:
-        # Save data from 10 acquisitions
         for i in range(10):
             with connect.access_data():
                 waveform: AnalogWaveform = connect.get_data("ch1")
